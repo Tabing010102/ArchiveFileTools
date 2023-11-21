@@ -11,9 +11,10 @@ namespace ArchiveFileBatchChecker
     {
         [Option('d', "dir", Required = true, HelpText = "The directory to scan.")]
         public string DirectoryPath { get; set; } = string.Empty;
-        [Option('e', "ext", Separator = ',', Default = "zip,rar,7z,001", HelpText = "The file extension to scan for.")]
-        public IList<string> Extensions { get; set; } = new List<string>();
-        [Option('p', "pwd", Separator = ',', Default = "", HelpText = "The password to use for the archive files.")]
-        public IList<string> Passwords { get; set; } = new List<string>();
+        [Option('e', "ext", Separator = ',', Default = new string[] { "zip", "z01", "7z", "001", "rar" },
+            HelpText = "The file extension to scan for.")]
+        public IEnumerable<string> Extensions { get; set; } = null!;
+        [Option('p', "pwd", Separator = ',', Default = new string[] { }, HelpText = "The password to use for the archive files.")]
+        public IEnumerable<string> Passwords { get; set; } = null!;
     }
 }
