@@ -16,5 +16,9 @@ namespace ArchiveFileBatchChecker
         public IEnumerable<string> Extensions { get; set; } = null!;
         [Option('p', "pwd", Separator = ',', Default = new string[] { }, HelpText = "The password to use for the archive files.")]
         public IEnumerable<string> Passwords { get; set; } = null!;
+        [Option('c', "console", Required = true, HelpText = "Print to console.", SetName = "console")]
+        public bool PrintToConsole { get; set; }
+        [Option('f', "file", Required = true, HelpText = "Result file location.", SetName = "file")]
+        public string ResultFilePath { get; set; } = string.Empty;
     }
 }
