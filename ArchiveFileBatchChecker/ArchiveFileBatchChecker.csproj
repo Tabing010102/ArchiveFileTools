@@ -7,4 +7,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.9.1" />
+    <PackageReference Include="Squid-Box.SevenZipSharp" Version="1.6.1.23" />
+  </ItemGroup>
+
 </Project>
