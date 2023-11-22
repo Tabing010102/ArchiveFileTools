@@ -15,7 +15,7 @@ namespace ArchiveFileBatchChecker
         }));
         private static ILogger _logger = _loggerFactory.CreateLogger<Program>();
 
-        private static Regex _regex = new(@"\.part(?!0*1)\d*\.");
+        private static Regex _regex = new(@"\.part(\d*[02-9]|0*[1-9]\d*1)\.");
 
         private static List<(string, string)> _succeedFiles = new();
         private static List<string> _failedFiles = new();
