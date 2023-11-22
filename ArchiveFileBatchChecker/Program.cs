@@ -69,7 +69,10 @@ namespace ArchiveFileBatchChecker
                     {
                         extractor = new SevenZipExtractor(file, pwd);
                     }
-                    if (extractor.Check())
+
+                    bool checkResult = extractor.Check();
+                    extractor.Dispose();
+                    if (checkResult == true)
                     {
                         result = true;
                         _succeedFiles.Add((file, pwd));
