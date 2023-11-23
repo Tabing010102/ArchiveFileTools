@@ -32,14 +32,14 @@ namespace ArchiveFileBatchChecker
             var pwds = new List<string> { string.Empty };
             pwds.AddRange(options.Passwords);
             var files = new List<string>();
-            if (options.InputFilePath != string.Empty)
+            if (string.IsNullOrWhiteSpace(options.InputFilePath) == false)
             {
                 _logger.LogInformation($"Reading files from \"{options.InputFilePath}\"");
                 files.AddRange(File.ReadAllLines(options.InputFilePath)
                                    .Where(x => string.IsNullOrWhiteSpace(x) == false));
                 _logger.LogInformation($"Added {files.Count} files");
             }
-            else
+            if (string.IsNullOrWhiteSpace(options.DirectoryPath) == false)
             {
                 foreach (var ext in options.Extensions)
                 {

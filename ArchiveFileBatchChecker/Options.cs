@@ -9,13 +9,13 @@ namespace ArchiveFileBatchChecker
 {
     public class Options
     {
-        [Option('i', "in", Required = true, HelpText = "Input file location.", SetName = "infile")]
+        [Option('i', "in", HelpText = "Input file location.", Group = "input")]
         public string InputFilePath { get; set; } = string.Empty;
-
-        [Option('d', "dir", Required = true, HelpText = "The directory to scan.", SetName = "scandir")]
+        [Option('d', "dir", HelpText = "The directory to scan.", Group = "input")]
         public string DirectoryPath { get; set; } = string.Empty;
+
         [Option('e', "ext", Separator = ',', Default = new string[] { "zip", "z01", "7z", "001", "rar" },
-            HelpText = "The file extension to scan for.", SetName = "scandir")]
+            HelpText = "The file extension to scan for.")]
         public IEnumerable<string> Extensions { get; set; } = null!;
 
         [Option('p', "pwd", Separator = ',', Default = new string[] { }, HelpText = "The password to use for the archive files.")]
