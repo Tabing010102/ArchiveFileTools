@@ -28,30 +28,40 @@ namespace ArchiveFileBatchChecker
 
         static void Run(Options options)
         {
-            var dir = options.DirectoryPath;
+            // add empty password
             var pwds = new List<string> { string.Empty };
             pwds.AddRange(options.Passwords);
             var files = new List<string>();
-            foreach (var ext in options.Extensions)
+            if (options.InputFilePath != string.Empty)
             {
-                _logger.LogInformation($"Adding files for extension {ext}");
-                var cntFiles = Directory.EnumerateFiles(dir, $"*.{ext}", SearchOption.AllDirectories);
-                files.AddRange(cntFiles);
-                _logger.LogInformation($"Added {cntFiles.Count()} files for extension {ext}");
+                _logger.LogInformation($"Reading files from \"{options.InputFilePath}\"");
+                files.AddRange(File.ReadAllLines(options.InputFilePath)
+                                   .Where(x => string.IsNullOrWhiteSpace(x) == false));
+                _logger.LogInformation($"Added {files.Count} files");
             }
-            _logger.LogInformation($"Totally added {files.Count} files");
-            var removedFiles = 0;
-            files = files.Where(file =>
+            else
             {
-                var result = _regex.IsMatch(file);
-                if (result == true)
+                foreach (var ext in options.Extensions)
                 {
-                    removedFiles++;
-                    _logger.LogInformation($"Removing file: \"{file}\"");
+                    _logger.LogInformation($"Adding files for extension {ext}");
+                    var cntFiles = Directory.EnumerateFiles(options.DirectoryPath, $"*.{ext}", SearchOption.AllDirectories);
+                    files.AddRange(cntFiles);
+                    _logger.LogInformation($"Added {cntFiles.Count()} files for extension {ext}");
                 }
-                return result == false;
-            }).ToList();
-            _logger.LogInformation($"Removed {removedFiles} files");
+                _logger.LogInformation($"Totally added {files.Count} files");
+                var removedFiles = 0;
+                files = files.Where(file =>
+                {
+                    var result = _regex.IsMatch(file);
+                    if (result == true)
+                    {
+                        removedFiles++;
+                        _logger.LogInformation($"Removing file: \"{file}\"");
+                    }
+                    return result == false;
+                }).ToList();
+                _logger.LogInformation($"Removed {removedFiles} files");
+            }
 
             
             foreach (var file in files)
