@@ -66,36 +66,45 @@ namespace ArchiveFileBatchChecker
             
             foreach (var file in files)
             {
-                var result = false;
-                foreach (var pwd in pwds)
+                try
                 {
-                    _logger.LogInformation($"Checking \"{file}\" with password \"{pwd}\"");
-                    SevenZipExtractor extractor;
-                    if (pwd == string.Empty)
+                    var result = false;
+                    foreach (var pwd in pwds)
                     {
-                        extractor = new SevenZipExtractor(file);
-                    }
-                    else
-                    {
-                        extractor = new SevenZipExtractor(file, pwd);
-                    }
+                        _logger.LogInformation($"Checking \"{file}\" with password \"{pwd}\"");
+                        SevenZipExtractor extractor;
+                        if (pwd == string.Empty)
+                        {
+                            extractor = new SevenZipExtractor(file);
+                        }
+                        else
+                        {
+                            extractor = new SevenZipExtractor(file, pwd);
+                        }
 
-                    bool checkResult = extractor.Check();
-                    extractor.Dispose();
-                    if (checkResult == true)
+                        bool checkResult = extractor.Check();
+                        extractor.Dispose();
+                        if (checkResult == true)
+                        {
+                            result = true;
+                            _succeedFiles.Add((file, pwd));
+                            _logger.LogInformation($"Check for \"{file}\" passed");
+                            break;
+                        }
+                    }
+                    if (result == false)
                     {
-                        result = true;
-                        _succeedFiles.Add((file, pwd));
-                        _logger.LogInformation($"Check for \"{file}\" passed");
-                        break;
+                        _failedFiles.Add(file);
+                        _logger.LogWarning($"Check for \"{file}\" failed");
                     }
                 }
-                if (result == false)
+                catch (Exception ex)
                 {
-                    _failedFiles.Add(file);
-                    _logger.LogWarning($"Check for \"{file}\" failed");
+                    _logger.LogError(ex, $"Error when checking \"{file}\"");
                 }
             }
+
+            // print results to console
             if (options.PrintToConsole)
             {
                 _logger.LogInformation($"Printing results to console");
