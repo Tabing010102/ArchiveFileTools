@@ -22,8 +22,12 @@ namespace ArchiveFileBatchChecker
 
         static void Main(string[] args)
         {
-            Parser.Default.ParseArguments<Options>(args)
-                          .WithParsed<Options>(Run);
+            var parser = new Parser(settings =>
+            {
+                settings.CaseInsensitiveEnumValues = true;
+            });
+            parser.ParseArguments<Options>(args)
+                  .WithParsed<Options>(Run);
         }
 
         static void Run(Options options)

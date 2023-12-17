@@ -20,7 +20,7 @@ namespace ArchiveFileBatchChecker
             Asc,
             Desc
         }
-        [Option('s', "sort", Default = SortMethod.Default, HelpText = "Sort method of input files.")]
+        [Option('s', "sort", Default = SortMethod.Default, HelpText = "Sort method of input files, possible values: Default, Asc, Desc.")]
         public SortMethod Sort { get; set; }
 
         [Option('e', "ext", Separator = ',', Default = new string[] { "zip", "z01", "7z", "001", "rar" },
