@@ -11,7 +11,7 @@ namespace ArchiveFileBatchChecker
         {
             o.IncludeScopes = true;
             o.SingleLine = true;
-            o.TimestampFormat = "O";
+            o.TimestampFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffK ";
         }));
         private static ILogger _logger = _loggerFactory.CreateLogger<Program>();
 
