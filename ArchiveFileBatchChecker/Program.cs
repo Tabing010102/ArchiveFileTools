@@ -62,7 +62,17 @@ namespace ArchiveFileBatchChecker
                 }).ToList();
                 _logger.LogInformation($"Removed {removedFiles} files");
             }
-
+            if (options.Sort != Options.SortMethod.Default)
+            {
+                _logger.LogInformation($"Sorting files with method {options.Sort}");
+                files = options.Sort switch
+                {
+                    Options.SortMethod.Asc => files.OrderBy(x => x).ToList(),
+                    Options.SortMethod.Desc => files.OrderByDescending(x => x).ToList(),
+                    _ => throw new NotImplementedException(),
+                };
+                _logger.LogInformation($"Sorted files with method {options.Sort}");
+            }
             
             foreach (var file in files)
             {
