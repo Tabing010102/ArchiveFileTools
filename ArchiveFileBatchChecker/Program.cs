@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using CommandLine.Text;
 using Microsoft.Extensions.Logging;
 using SevenZip;
 using System.Text.RegularExpressions;
@@ -26,8 +27,9 @@ namespace ArchiveFileBatchChecker
             {
                 settings.CaseInsensitiveEnumValues = true;
             });
-            parser.ParseArguments<Options>(args)
-                  .WithParsed<Options>(Run);
+            var parserResult = parser.ParseArguments<Options>(args);
+            parserResult.WithParsed<Options>(Run)
+                        .WithNotParsed(x => Console.WriteLine(HelpText.AutoBuild(parserResult)));
         }
 
         static void Run(Options options)
